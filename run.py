@@ -7,14 +7,19 @@
 # $$/   \  $$|  $$$$$$$ /$$$$$$$$|  $$$$$$$| $$  | $$|  $$$$$$$| $$| $$
 #__/     \__/ \_______/|________/ \_______/|__/  |__/ \_______/|__/|__/
 #                                                                      
-#                                                                                                                                            
+#         
+#
+#for more infos go to https://docs.python.org/2/library/smtplib.html
+
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 
 
-#check connectoin class 
-def checkConnection(server, port, tls, user, passw):
+
+
+# func to connect to smtp 
+def smtp_Connect(host, port, tls, user, passw):
     try:
         connect = smtplib.SMTP(server, port)
         connect.ehlo()
@@ -25,13 +30,13 @@ def checkConnection(server, port, tls, user, passw):
         return connect
     except:
         return False
-	
-	
-	
-	#mail info 
-def mailSend(server, port, tls, user, passw, maillist, From, subject, mailtext):
-    smtpConnect = checkConnection(server, port, tls, user, passw)
-    emails = len(maillist)
+
+
+# func to get user inputs and sending mails	
+def go_to_Send(host, port, tls, user, passw, maillist, From, subject, mailtext):
+    smtpConnect = smtp_connect(host, port, tls, user, passw)
+    #count mails 
+    mailss = len(maillistt)
     for success, sendto in enumerate(maillist):
         content = MIMEMultipart()
         content['From'] = From
@@ -40,9 +45,9 @@ def mailSend(server, port, tls, user, passw, maillist, From, subject, mailtext):
         htmlscript = mailtext.rstrip()
         content.attach(MIMEText(htmlscript, 'html'))
         print('Python Email Sender >>> You are going to send to '+sendto.rstrip())
-        smtpConnect.sendmail(From, sendto.rstrip(), content.as_string())
+        smtp_Connect.go_to_Send(From, sendto.rstrip(), content.as_string())
     smtpConnect.quit()
-    print('\n Python Email Sender >>> Email to '+str(success+1)+'/'+str(emails)+' Done H5H \n')
+    print('\n Python Email Sender >>> Email to '+str(success+1)+'/'+str(mailss)+' Done H5H \n')
     
     
 print('''
@@ -64,39 +69,39 @@ print('Python SMTP Email Sender')
 
 #smtp connect 
 
-smtpServer = raw_input('\n SMTP Server: ')
+smtphost = raw_input('\n SMTP Server ? : ')
 
-smtpPort = input('SMTP Port : ')
+smtpPort = input('SMTP Port ? : ')
 
-smtpTLS = input('TLS ? For yes enter [1] For No Enter [0]): ')
+smtpTLS = input('TLS ? For yes enter [1] For No Enter [0]) : ')
 
-smtpUser = raw_input('SMTP Username: ')
+smtpUsername = raw_input('SMTP Username ? : ')
 
-smtpPass = raw_input('SMTP Password: ')
+smtpPass = raw_input('SMTP Password ? : ')
 
 #check if smtp connected 
-if checkConnection(smtpServer, smtpPort, smtpTLS, smtpUser, smtpPass,):
+if smtp_Connect(smtphost, smtpPort, smtpTLS, smtpUsername, smtpPass,):
     print('\n Python Email Sender >>> SMTP Status // Connected!')
     
     
     sendFrom = raw_input('\n Enter Sender Name: ')
     sendSubj = raw_input('Enter Subject: ')
-    userlist = raw_input('Enter Email List as txt file: ')
+    maillistt = raw_input('Enter Email List as txt file: ')
     
-    
+    #open mail list 
     try:
-        maillist = open(userlist).readlines()
-        print('\nPython mail Sender >>> Have '+str(len(maillist))+' Mail .')
-        htmlscript = raw_input('\n Enter Path HTML msg: ')
+        maillist1 = open(maillistt).readlines()
+        print('\nPython mail Sender >>> Have '+str(len(maillist1))+' Mail .')
+        htmlmsg = raw_input('\n Enter Path HTML msg: ')
 	
-	
+		#open html file 
         try:
-            html = open(htmlscript).read()
-            raw_input('ENTER, To Start Send'+str(len(maillist))+' ...\n')
+            html = open(htmlmsg).read()
+            raw_input('ENTER, To Start Send'+str(len(maillist1))+' ...\n')
 	    
-	    
+	    	# let's go lol 
             try:
-                mailSend(smtpServer, smtpPort, smtpTLS, smtpUser, smtpPass, maillist, sendFrom, sendSubj, html)
+                go_to_Send(smtphost, smtpPort, smtpTLS, smtpUsername, smtpPass, maillist1, sendFrom, sendSubj, html)
             except:
                 print('ERROR: I CANT USE THE EMAIL!')
         except:
