@@ -1,24 +1,8 @@
-#/$$      /$$           /$$$$$$$$           /$$   /$$           /$$ /$$
-# $$  /$ | $$          |_____ $$           | $$  | $$          | $$| $$
-# $$ /$$$| $$  /$$$$$$      /$$/   /$$$$$$ | $$  | $$  /$$$$$$ | $$| $$
-# $$/$$ $$ $$ |____  $$    /$$/   /$$__  $$| $$$$$$$$ /$$__  $$| $$| $$
-# $$$$_  $$$$  /$$$$$$$   /$$/   | $$$$$$$$| $$__  $$| $$$$$$$$| $$| $$
-# $$$/ \  $$$ /$$__  $$  /$$/    | $$_____/| $$  | $$| $$_____/| $$| $$
-# $$/   \  $$|  $$$$$$$ /$$$$$$$$|  $$$$$$$| $$  | $$|  $$$$$$$| $$| $$
-#__/     \__/ \_______/|________/ \_______/|__/  |__/ \_______/|__/|__/
-#                                                                      
-#         
-#
 #for more infos go to https://docs.python.org/2/library/smtplib.html
-
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
-
-
-
-
-# func to connect to smtp 
+# smtp connect func  
 def smtp_Connect(host, port, tls, user, passw):
     try:
         connect = smtplib.SMTP(server, port)
@@ -30,9 +14,7 @@ def smtp_Connect(host, port, tls, user, passw):
         return connect
     except:
         return False
-
-
-# func to get user inputs and sending mails	
+# send mail func	
 def go_to_Send(host, port, tls, user, passw, maillist, From, subject, mailtext):
     smtpConnect = smtp_connect(host, port, tls, user, passw)
     #count mails 
@@ -48,8 +30,7 @@ def go_to_Send(host, port, tls, user, passw, maillist, From, subject, mailtext):
         smtp_Connect.go_to_Send(From, sendto.rstrip(), content.as_string())
     smtpConnect.quit()
     print('\n Python Email Sender >>> Email to '+str(success+1)+'/'+str(mailss)+' Done H5H \n')
-    
-    
+#header
 print('''
  /$$      /$$           /$$$$$$$$           /$$   /$$           /$$ /$$
 | $$  /$ | $$          |_____ $$           | $$  | $$          | $$| $$
@@ -62,79 +43,36 @@ print('''
                                                             ''')
 
 print('Python SMTP Email Sender')
-
-
-
-
-
-#smtp connect 
-
+#smtp data
 smtphost = raw_input('\n SMTP Server ? : ')
-
 smtpPort = input('SMTP Port ? : ')
-
 smtpTLS = input('TLS ? For yes enter [1] For No Enter [0]) : ')
-
 smtpUsername = raw_input('SMTP Username ? : ')
-
 smtpPass = raw_input('SMTP Password ? : ')
-
 #check if smtp connected 
 if smtp_Connect(smtphost, smtpPort, smtpTLS, smtpUsername, smtpPass,):
     print('\n Python Email Sender >>> SMTP Status // Connected!')
-    
-    
+    #it's fine :)
     sendFrom = raw_input('\n Enter Sender Name: ')
     sendSubj = raw_input('Enter Subject: ')
     maillistt = raw_input('Enter Email List as txt file: ')
-    
-    #open mail list 
+    #opening mail list 
     try:
         maillist1 = open(maillistt).readlines()
         print('\nPython mail Sender >>> Have '+str(len(maillist1))+' Mail .')
         htmlmsg = raw_input('\n Enter Path HTML msg: ')
-	
-		#open html file 
+	#try to open html file 
         try:
             html = open(htmlmsg).read()
             raw_input('ENTER, To Start Send'+str(len(maillist1))+' ...\n')
-	    
-	    	# let's go lol 
+	    # try to start sending 
             try:
                 go_to_Send(smtphost, smtpPort, smtpTLS, smtpUsername, smtpPass, maillist1, sendFrom, sendSubj, html)
             except:
-                print('ERROR: I CANT USE THE EMAIL!')
+                print('Email Error')
         except:
-            print('The HTML File cannot get readed yet or is empty.')
+            print('Check The HTML Msg File !.')
     except:
-        print('The .txt File cannot get readed or is empty.')
+        print('Check The Text File !.')
 else:
-    print('No Connetoin in the Server -_- ')
-    
-    
-
-    
-    
-    
-    
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
+    print('Server Error ')
